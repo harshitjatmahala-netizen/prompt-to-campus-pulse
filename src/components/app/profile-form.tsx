@@ -25,7 +25,7 @@ export const profileSchema = z.object({
   semester: z.coerce.number().int().min(1, "Choose your semester").max(8),
   section: z.string().min(1, "Choose your section"),
 });
-type FormValues = z.input<typeof profileSchema>;
+type FormValues = Omit<z.input<typeof profileSchema>, "semester"> & { semester: string | number };
 
 export function ProfileForm({
   profile,
@@ -56,8 +56,8 @@ export function ProfileForm({
 
   async function onAvatar(file?: File) {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return toast.error("Please choose an image file");
-    if (file.size > 5 * 1024 * 1024) return toast.error("Image must be under 5 MB");
+    if (!file.type.startsWith("image/")) { toast.error("Please choose an image file"); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Image must be under 5 MB"); return; }
     setUploading(true);
     try {
       const path = await uploadFile("media", profile.id, file);
@@ -85,7 +85,7 @@ export function ProfileForm({
       .update({ ...parsed.data, avatar_url: avatar, profile_completed: true })
       .eq("id", profile.id);
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await qc.invalidateQueries({ queryKey: ["me"] });
     toast.success("Profile saved");
     onSaved?.();

@@ -22,10 +22,10 @@ import { signedUrl } from "@/lib/storage";
 import { pageHead } from "@/lib/seo";
 import type { Tables } from "@/integrations/supabase/types";
 
-type NotesSearch = { q?: string };
+type NotesSearch = { q?: string | undefined };
 
 export const Route = createFileRoute("/_authenticated/_shell/notes")({
-  validateSearch: (s: Record<string, unknown>): NotesSearch => ({ q: typeof s.q === "string" ? s.q : undefined }),
+  validateSearch: (s: Record<string, unknown>): NotesSearch => ({ q: typeof s["q"] === "string" ? s["q"] : undefined }),
   head: () => pageHead("Notes", "Download and preview study material shared by faculty."),
   component: NotesPage,
 });

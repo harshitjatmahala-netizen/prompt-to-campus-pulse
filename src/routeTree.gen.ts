@@ -14,9 +14,16 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedShellRouteRouteImport } from './routes/_authenticated/_shell/route'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedShellAdminRouteImport } from './routes/_authenticated/_shell/admin'
 import { Route as AuthenticatedShellAssignmentsRouteImport } from './routes/_authenticated/_shell/assignments'
+import { Route as AuthenticatedShellDashboardRouteImport } from './routes/_authenticated/_shell/dashboard'
 import { Route as AuthenticatedShellLostFoundRouteImport } from './routes/_authenticated/_shell/lost-found'
 import { Route as AuthenticatedShellNotesRouteImport } from './routes/_authenticated/_shell/notes'
+import { Route as AuthenticatedShellProfileRouteImport } from './routes/_authenticated/_shell/profile'
+import { Route as AuthenticatedShellSettingsRouteImport } from './routes/_authenticated/_shell/settings'
+import { Route as AuthenticatedShellAdminAnalyticsRouteImport } from './routes/_authenticated/_shell/admin.analytics'
+import { Route as AuthenticatedShellAdminClaimsRouteImport } from './routes/_authenticated/_shell/admin.claims'
+import { Route as AuthenticatedShellAdminUsersRouteImport } from './routes/_authenticated/_shell/admin.users'
 import { Route as AuthenticatedShellEventsIndexRouteImport } from './routes/_authenticated/_shell/events.index'
 import { Route as AuthenticatedShellEventsIdRouteImport } from './routes/_authenticated/_shell/events.$id'
 import { Route as AuthenticatedShellNoticesIndexRouteImport } from './routes/_authenticated/_shell/notices.index'
@@ -45,10 +52,21 @@ const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedShellAdminRoute = AuthenticatedShellAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedShellRouteRoute,
+} as any)
 const AuthenticatedShellAssignmentsRoute =
   AuthenticatedShellAssignmentsRouteImport.update({
     id: '/assignments',
     path: '/assignments',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellDashboardRoute =
+  AuthenticatedShellDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
     getParentRoute: () => AuthenticatedShellRouteRoute,
   } as any)
 const AuthenticatedShellLostFoundRoute =
@@ -62,6 +80,36 @@ const AuthenticatedShellNotesRoute = AuthenticatedShellNotesRouteImport.update({
   path: '/notes',
   getParentRoute: () => AuthenticatedShellRouteRoute,
 } as any)
+const AuthenticatedShellProfileRoute =
+  AuthenticatedShellProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellSettingsRoute =
+  AuthenticatedShellSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellAdminAnalyticsRoute =
+  AuthenticatedShellAdminAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedShellAdminRoute,
+  } as any)
+const AuthenticatedShellAdminClaimsRoute =
+  AuthenticatedShellAdminClaimsRouteImport.update({
+    id: '/claims',
+    path: '/claims',
+    getParentRoute: () => AuthenticatedShellAdminRoute,
+  } as any)
+const AuthenticatedShellAdminUsersRoute =
+  AuthenticatedShellAdminUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AuthenticatedShellAdminRoute,
+  } as any)
 const AuthenticatedShellEventsIndexRoute =
   AuthenticatedShellEventsIndexRouteImport.update({
     id: '/events/',
@@ -91,9 +139,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/admin': typeof AuthenticatedShellAdminRouteWithChildren
   '/assignments': typeof AuthenticatedShellAssignmentsRoute
+  '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/lost-found': typeof AuthenticatedShellLostFoundRoute
   '/notes': typeof AuthenticatedShellNotesRoute
+  '/profile': typeof AuthenticatedShellProfileRoute
+  '/settings': typeof AuthenticatedShellSettingsRoute
+  '/admin/analytics': typeof AuthenticatedShellAdminAnalyticsRoute
+  '/admin/claims': typeof AuthenticatedShellAdminClaimsRoute
+  '/admin/users': typeof AuthenticatedShellAdminUsersRoute
   '/events/$id': typeof AuthenticatedShellEventsIdRoute
   '/notices/$id': typeof AuthenticatedShellNoticesIdRoute
   '/events/': typeof AuthenticatedShellEventsIndexRoute
@@ -103,9 +158,16 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/admin': typeof AuthenticatedShellAdminRouteWithChildren
   '/assignments': typeof AuthenticatedShellAssignmentsRoute
+  '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/lost-found': typeof AuthenticatedShellLostFoundRoute
   '/notes': typeof AuthenticatedShellNotesRoute
+  '/profile': typeof AuthenticatedShellProfileRoute
+  '/settings': typeof AuthenticatedShellSettingsRoute
+  '/admin/analytics': typeof AuthenticatedShellAdminAnalyticsRoute
+  '/admin/claims': typeof AuthenticatedShellAdminClaimsRoute
+  '/admin/users': typeof AuthenticatedShellAdminUsersRoute
   '/events/$id': typeof AuthenticatedShellEventsIdRoute
   '/notices/$id': typeof AuthenticatedShellNoticesIdRoute
   '/events': typeof AuthenticatedShellEventsIndexRoute
@@ -118,9 +180,16 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/_shell': typeof AuthenticatedShellRouteRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/_shell/admin': typeof AuthenticatedShellAdminRouteWithChildren
   '/_authenticated/_shell/assignments': typeof AuthenticatedShellAssignmentsRoute
+  '/_authenticated/_shell/dashboard': typeof AuthenticatedShellDashboardRoute
   '/_authenticated/_shell/lost-found': typeof AuthenticatedShellLostFoundRoute
   '/_authenticated/_shell/notes': typeof AuthenticatedShellNotesRoute
+  '/_authenticated/_shell/profile': typeof AuthenticatedShellProfileRoute
+  '/_authenticated/_shell/settings': typeof AuthenticatedShellSettingsRoute
+  '/_authenticated/_shell/admin/analytics': typeof AuthenticatedShellAdminAnalyticsRoute
+  '/_authenticated/_shell/admin/claims': typeof AuthenticatedShellAdminClaimsRoute
+  '/_authenticated/_shell/admin/users': typeof AuthenticatedShellAdminUsersRoute
   '/_authenticated/_shell/events/$id': typeof AuthenticatedShellEventsIdRoute
   '/_authenticated/_shell/notices/$id': typeof AuthenticatedShellNoticesIdRoute
   '/_authenticated/_shell/events/': typeof AuthenticatedShellEventsIndexRoute
@@ -132,9 +201,16 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/onboarding'
+    | '/admin'
     | '/assignments'
+    | '/dashboard'
     | '/lost-found'
     | '/notes'
+    | '/profile'
+    | '/settings'
+    | '/admin/analytics'
+    | '/admin/claims'
+    | '/admin/users'
     | '/events/$id'
     | '/notices/$id'
     | '/events/'
@@ -144,9 +220,16 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/onboarding'
+    | '/admin'
     | '/assignments'
+    | '/dashboard'
     | '/lost-found'
     | '/notes'
+    | '/profile'
+    | '/settings'
+    | '/admin/analytics'
+    | '/admin/claims'
+    | '/admin/users'
     | '/events/$id'
     | '/notices/$id'
     | '/events'
@@ -158,9 +241,16 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/_shell'
     | '/_authenticated/onboarding'
+    | '/_authenticated/_shell/admin'
     | '/_authenticated/_shell/assignments'
+    | '/_authenticated/_shell/dashboard'
     | '/_authenticated/_shell/lost-found'
     | '/_authenticated/_shell/notes'
+    | '/_authenticated/_shell/profile'
+    | '/_authenticated/_shell/settings'
+    | '/_authenticated/_shell/admin/analytics'
+    | '/_authenticated/_shell/admin/claims'
+    | '/_authenticated/_shell/admin/users'
     | '/_authenticated/_shell/events/$id'
     | '/_authenticated/_shell/notices/$id'
     | '/_authenticated/_shell/events/'
@@ -210,11 +300,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/_shell/admin': {
+      id: '/_authenticated/_shell/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedShellAdminRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
     '/_authenticated/_shell/assignments': {
       id: '/_authenticated/_shell/assignments'
       path: '/assignments'
       fullPath: '/assignments'
       preLoaderRoute: typeof AuthenticatedShellAssignmentsRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/dashboard': {
+      id: '/_authenticated/_shell/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedShellDashboardRouteImport
       parentRoute: typeof AuthenticatedShellRouteRoute
     }
     '/_authenticated/_shell/lost-found': {
@@ -230,6 +334,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/notes'
       preLoaderRoute: typeof AuthenticatedShellNotesRouteImport
       parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/profile': {
+      id: '/_authenticated/_shell/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedShellProfileRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/settings': {
+      id: '/_authenticated/_shell/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedShellSettingsRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/admin/analytics': {
+      id: '/_authenticated/_shell/admin/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AuthenticatedShellAdminAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedShellAdminRoute
+    }
+    '/_authenticated/_shell/admin/claims': {
+      id: '/_authenticated/_shell/admin/claims'
+      path: '/claims'
+      fullPath: '/admin/claims'
+      preLoaderRoute: typeof AuthenticatedShellAdminClaimsRouteImport
+      parentRoute: typeof AuthenticatedShellAdminRoute
+    }
+    '/_authenticated/_shell/admin/users': {
+      id: '/_authenticated/_shell/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedShellAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedShellAdminRoute
     }
     '/_authenticated/_shell/events/': {
       id: '/_authenticated/_shell/events/'
@@ -262,10 +401,33 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedShellAdminRouteChildren {
+  AuthenticatedShellAdminAnalyticsRoute: typeof AuthenticatedShellAdminAnalyticsRoute
+  AuthenticatedShellAdminClaimsRoute: typeof AuthenticatedShellAdminClaimsRoute
+  AuthenticatedShellAdminUsersRoute: typeof AuthenticatedShellAdminUsersRoute
+}
+
+const AuthenticatedShellAdminRouteChildren: AuthenticatedShellAdminRouteChildren =
+  {
+    AuthenticatedShellAdminAnalyticsRoute:
+      AuthenticatedShellAdminAnalyticsRoute,
+    AuthenticatedShellAdminClaimsRoute: AuthenticatedShellAdminClaimsRoute,
+    AuthenticatedShellAdminUsersRoute: AuthenticatedShellAdminUsersRoute,
+  }
+
+const AuthenticatedShellAdminRouteWithChildren =
+  AuthenticatedShellAdminRoute._addFileChildren(
+    AuthenticatedShellAdminRouteChildren,
+  )
+
 interface AuthenticatedShellRouteRouteChildren {
+  AuthenticatedShellAdminRoute: typeof AuthenticatedShellAdminRouteWithChildren
   AuthenticatedShellAssignmentsRoute: typeof AuthenticatedShellAssignmentsRoute
+  AuthenticatedShellDashboardRoute: typeof AuthenticatedShellDashboardRoute
   AuthenticatedShellLostFoundRoute: typeof AuthenticatedShellLostFoundRoute
   AuthenticatedShellNotesRoute: typeof AuthenticatedShellNotesRoute
+  AuthenticatedShellProfileRoute: typeof AuthenticatedShellProfileRoute
+  AuthenticatedShellSettingsRoute: typeof AuthenticatedShellSettingsRoute
   AuthenticatedShellEventsIdRoute: typeof AuthenticatedShellEventsIdRoute
   AuthenticatedShellNoticesIdRoute: typeof AuthenticatedShellNoticesIdRoute
   AuthenticatedShellEventsIndexRoute: typeof AuthenticatedShellEventsIndexRoute
@@ -274,9 +436,13 @@ interface AuthenticatedShellRouteRouteChildren {
 
 const AuthenticatedShellRouteRouteChildren: AuthenticatedShellRouteRouteChildren =
   {
+    AuthenticatedShellAdminRoute: AuthenticatedShellAdminRouteWithChildren,
     AuthenticatedShellAssignmentsRoute: AuthenticatedShellAssignmentsRoute,
+    AuthenticatedShellDashboardRoute: AuthenticatedShellDashboardRoute,
     AuthenticatedShellLostFoundRoute: AuthenticatedShellLostFoundRoute,
     AuthenticatedShellNotesRoute: AuthenticatedShellNotesRoute,
+    AuthenticatedShellProfileRoute: AuthenticatedShellProfileRoute,
+    AuthenticatedShellSettingsRoute: AuthenticatedShellSettingsRoute,
     AuthenticatedShellEventsIdRoute: AuthenticatedShellEventsIdRoute,
     AuthenticatedShellNoticesIdRoute: AuthenticatedShellNoticesIdRoute,
     AuthenticatedShellEventsIndexRoute: AuthenticatedShellEventsIndexRoute,

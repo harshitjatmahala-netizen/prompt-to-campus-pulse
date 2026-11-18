@@ -74,11 +74,11 @@ export function ClaimDialog({
         </DialogHeader>
         <div className="grid gap-4">
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Student name" htmlFor="c-name" error={errors.student_name}><Input id="c-name" value={f.student_name} onChange={set("student_name")} /></Field>
-            <Field label="Roll number" htmlFor="c-roll" error={errors.roll_number}><Input id="c-roll" value={f.roll_number} onChange={set("roll_number")} /></Field>
+            <Field label="Student name" htmlFor="c-name" error={errors["student_name"]}><Input id="c-name" value={f.student_name} onChange={set("student_name")} /></Field>
+            <Field label="Roll number" htmlFor="c-roll" error={errors["roll_number"]}><Input id="c-roll" value={f.roll_number} onChange={set("roll_number")} /></Field>
           </div>
-          <Field label="Phone number" htmlFor="c-phone" error={errors.phone}><Input id="c-phone" value={f.phone} onChange={set("phone")} /></Field>
-          <Field label="Proof of ownership" htmlFor="c-reason" error={errors.reason} hint="E.g. lock-screen wallpaper, a scratch, what's inside, purchase bill.">
+          <Field label="Phone number" htmlFor="c-phone" error={errors["phone"]}><Input id="c-phone" value={f.phone} onChange={set("phone")} /></Field>
+          <Field label="Proof of ownership" htmlFor="c-reason" error={errors["reason"]} hint="E.g. lock-screen wallpaper, a scratch, what's inside, purchase bill.">
             <Textarea id="c-reason" rows={4} value={f.reason} onChange={set("reason")} placeholder="Describe something only the owner would know…" />
           </Field>
         </div>

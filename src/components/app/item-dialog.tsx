@@ -50,8 +50,8 @@ export function ItemDialog({
 
   async function onImage(file?: File) {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return toast.error("Choose an image");
-    if (file.size > 5 * 1024 * 1024) return toast.error("Image must be under 5 MB");
+    if (!file.type.startsWith("image/")) { toast.error("Choose an image"); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Image must be under 5 MB"); return; }
     setUploading(true);
     try {
       setImage(await uploadFile("media", userId, file));

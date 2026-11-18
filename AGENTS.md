@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+<!-- AGENT-MEMORY:BEGIN -->
+- Roles live in public.user_roles (student/faculty/admin); RLS enforces them, UI only hides controls. Why: prevents privilege escalation.
+- Profiles are created only for allowed email domains (public.allowed_domains) by an auth trigger; admin emails come from public.admin_emails. Why: domain restriction enforced in the database.
+- Signed-in pages live under src/routes/_authenticated/_shell (sidebar layout, requires completed profile). Why: one gate for profile setup.
+- Files go to private buckets (notes, media) and are shown via signed URLs. Why: public buckets are blocked in this workspace.
+<!-- AGENT-MEMORY:END -->

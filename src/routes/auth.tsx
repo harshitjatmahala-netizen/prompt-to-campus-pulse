@@ -10,11 +10,11 @@ import { allowedDomainsQuery } from "@/lib/me";
 import { isAllowedEmail } from "@/lib/rules";
 import { LOGIN_DOMAIN_ERROR } from "@/lib/constants";
 
-type AuthSearch = { error?: "domain" };
+type AuthSearch = { error?: "domain" | undefined };
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): AuthSearch => ({
-    error: s.error === "domain" ? "domain" : undefined,
+    error: s["error"] === "domain" ? "domain" : undefined,
   }),
   head: () => ({
     meta: [

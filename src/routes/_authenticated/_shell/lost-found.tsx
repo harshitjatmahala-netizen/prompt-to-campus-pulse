@@ -22,10 +22,10 @@ import { ITEM_CATEGORIES, ITEM_STATUSES, itemStatus, type ItemStatus } from "@/l
 import { pageHead } from "@/lib/seo";
 import type { Tables } from "@/integrations/supabase/types";
 
-type LFSearch = { q?: string };
+type LFSearch = { q?: string | undefined };
 
 export const Route = createFileRoute("/_authenticated/_shell/lost-found")({
-  validateSearch: (s: Record<string, unknown>): LFSearch => ({ q: typeof s.q === "string" ? s.q : undefined }),
+  validateSearch: (s: Record<string, unknown>): LFSearch => ({ q: typeof s["q"] === "string" ? s["q"] : undefined }),
   head: () => pageHead("Lost & Found", "Find items handed in to the College Office and request a claim."),
   component: LostFoundPage,
 });

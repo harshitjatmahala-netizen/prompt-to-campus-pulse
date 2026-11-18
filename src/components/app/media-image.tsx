@@ -8,9 +8,9 @@ export function MediaImage({
   className,
   fallback,
 }: {
-  src?: string | null;
+  src?: string | null | undefined;
   alt: string;
-  className?: string;
+  className?: string | undefined;
   fallback: ReactNode;
 }) {
   const url = useMediaUrl(src);

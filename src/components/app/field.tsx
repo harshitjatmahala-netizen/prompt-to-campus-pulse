@@ -11,8 +11,8 @@ export function Field({
   className,
 }: {
   label: string;
-  htmlFor?: string;
-  error?: string;
+  htmlFor?: string | undefined;
+  error?: string | undefined;
   hint?: ReactNode;
   children: ReactNode;
   className?: string;

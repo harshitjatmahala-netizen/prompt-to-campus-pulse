@@ -69,10 +69,10 @@ export const ROLE_LABEL: Record<AppRole, string> = {
 };
 
 export function noticeCategory(value: string) {
-  return NOTICE_CATEGORIES.find((c) => c.value === value) ?? NOTICE_CATEGORIES[5];
+  return NOTICE_CATEGORIES.find((c) => c.value === value) ?? NOTICE_CATEGORIES[5]!;
 }
 export function itemStatus(value: string) {
-  return ITEM_STATUSES.find((c) => c.value === value) ?? ITEM_STATUSES[0];
+  return ITEM_STATUSES.find((c) => c.value === value) ?? ITEM_STATUSES[0]!;
 }
 
 export const LOGIN_DOMAIN_ERROR = "Please login using your official college email.";
