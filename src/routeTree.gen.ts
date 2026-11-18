@@ -10,33 +10,167 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedShellRouteRouteImport } from './routes/_authenticated/_shell/route'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedShellAssignmentsRouteImport } from './routes/_authenticated/_shell/assignments'
+import { Route as AuthenticatedShellLostFoundRouteImport } from './routes/_authenticated/_shell/lost-found'
+import { Route as AuthenticatedShellNotesRouteImport } from './routes/_authenticated/_shell/notes'
+import { Route as AuthenticatedShellEventsIndexRouteImport } from './routes/_authenticated/_shell/events.index'
+import { Route as AuthenticatedShellEventsIdRouteImport } from './routes/_authenticated/_shell/events.$id'
+import { Route as AuthenticatedShellNoticesIndexRouteImport } from './routes/_authenticated/_shell/notices.index'
+import { Route as AuthenticatedShellNoticesIdRouteImport } from './routes/_authenticated/_shell/notices.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedShellRouteRoute = AuthenticatedShellRouteRouteImport.update({
+  id: '/_shell',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedShellAssignmentsRoute =
+  AuthenticatedShellAssignmentsRouteImport.update({
+    id: '/assignments',
+    path: '/assignments',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellLostFoundRoute =
+  AuthenticatedShellLostFoundRouteImport.update({
+    id: '/lost-found',
+    path: '/lost-found',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellNotesRoute = AuthenticatedShellNotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => AuthenticatedShellRouteRoute,
+} as any)
+const AuthenticatedShellEventsIndexRoute =
+  AuthenticatedShellEventsIndexRouteImport.update({
+    id: '/events/',
+    path: '/events/',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellEventsIdRoute =
+  AuthenticatedShellEventsIdRouteImport.update({
+    id: '/events/$id',
+    path: '/events/$id',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellNoticesIndexRoute =
+  AuthenticatedShellNoticesIndexRouteImport.update({
+    id: '/notices/',
+    path: '/notices/',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellNoticesIdRoute =
+  AuthenticatedShellNoticesIdRouteImport.update({
+    id: '/notices/$id',
+    path: '/notices/$id',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/assignments': typeof AuthenticatedShellAssignmentsRoute
+  '/lost-found': typeof AuthenticatedShellLostFoundRoute
+  '/notes': typeof AuthenticatedShellNotesRoute
+  '/events/$id': typeof AuthenticatedShellEventsIdRoute
+  '/notices/$id': typeof AuthenticatedShellNoticesIdRoute
+  '/events/': typeof AuthenticatedShellEventsIndexRoute
+  '/notices/': typeof AuthenticatedShellNoticesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/assignments': typeof AuthenticatedShellAssignmentsRoute
+  '/lost-found': typeof AuthenticatedShellLostFoundRoute
+  '/notes': typeof AuthenticatedShellNotesRoute
+  '/events/$id': typeof AuthenticatedShellEventsIdRoute
+  '/notices/$id': typeof AuthenticatedShellNoticesIdRoute
+  '/events': typeof AuthenticatedShellEventsIndexRoute
+  '/notices': typeof AuthenticatedShellNoticesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/_shell': typeof AuthenticatedShellRouteRouteWithChildren
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/_shell/assignments': typeof AuthenticatedShellAssignmentsRoute
+  '/_authenticated/_shell/lost-found': typeof AuthenticatedShellLostFoundRoute
+  '/_authenticated/_shell/notes': typeof AuthenticatedShellNotesRoute
+  '/_authenticated/_shell/events/$id': typeof AuthenticatedShellEventsIdRoute
+  '/_authenticated/_shell/notices/$id': typeof AuthenticatedShellNoticesIdRoute
+  '/_authenticated/_shell/events/': typeof AuthenticatedShellEventsIndexRoute
+  '/_authenticated/_shell/notices/': typeof AuthenticatedShellNoticesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/assignments'
+    | '/lost-found'
+    | '/notes'
+    | '/events/$id'
+    | '/notices/$id'
+    | '/events/'
+    | '/notices/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/assignments'
+    | '/lost-found'
+    | '/notes'
+    | '/events/$id'
+    | '/notices/$id'
+    | '/events'
+    | '/notices'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/_shell'
+    | '/_authenticated/onboarding'
+    | '/_authenticated/_shell/assignments'
+    | '/_authenticated/_shell/lost-found'
+    | '/_authenticated/_shell/notes'
+    | '/_authenticated/_shell/events/$id'
+    | '/_authenticated/_shell/notices/$id'
+    | '/_authenticated/_shell/events/'
+    | '/_authenticated/_shell/notices/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +182,129 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/_shell': {
+      id: '/_authenticated/_shell'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedShellRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_shell/assignments': {
+      id: '/_authenticated/_shell/assignments'
+      path: '/assignments'
+      fullPath: '/assignments'
+      preLoaderRoute: typeof AuthenticatedShellAssignmentsRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/lost-found': {
+      id: '/_authenticated/_shell/lost-found'
+      path: '/lost-found'
+      fullPath: '/lost-found'
+      preLoaderRoute: typeof AuthenticatedShellLostFoundRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/notes': {
+      id: '/_authenticated/_shell/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof AuthenticatedShellNotesRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/events/': {
+      id: '/_authenticated/_shell/events/'
+      path: '/events'
+      fullPath: '/events/'
+      preLoaderRoute: typeof AuthenticatedShellEventsIndexRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/events/$id': {
+      id: '/_authenticated/_shell/events/$id'
+      path: '/events/$id'
+      fullPath: '/events/$id'
+      preLoaderRoute: typeof AuthenticatedShellEventsIdRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/notices/': {
+      id: '/_authenticated/_shell/notices/'
+      path: '/notices'
+      fullPath: '/notices/'
+      preLoaderRoute: typeof AuthenticatedShellNoticesIndexRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/notices/$id': {
+      id: '/_authenticated/_shell/notices/$id'
+      path: '/notices/$id'
+      fullPath: '/notices/$id'
+      preLoaderRoute: typeof AuthenticatedShellNoticesIdRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
   }
 }
 
+interface AuthenticatedShellRouteRouteChildren {
+  AuthenticatedShellAssignmentsRoute: typeof AuthenticatedShellAssignmentsRoute
+  AuthenticatedShellLostFoundRoute: typeof AuthenticatedShellLostFoundRoute
+  AuthenticatedShellNotesRoute: typeof AuthenticatedShellNotesRoute
+  AuthenticatedShellEventsIdRoute: typeof AuthenticatedShellEventsIdRoute
+  AuthenticatedShellNoticesIdRoute: typeof AuthenticatedShellNoticesIdRoute
+  AuthenticatedShellEventsIndexRoute: typeof AuthenticatedShellEventsIndexRoute
+  AuthenticatedShellNoticesIndexRoute: typeof AuthenticatedShellNoticesIndexRoute
+}
+
+const AuthenticatedShellRouteRouteChildren: AuthenticatedShellRouteRouteChildren =
+  {
+    AuthenticatedShellAssignmentsRoute: AuthenticatedShellAssignmentsRoute,
+    AuthenticatedShellLostFoundRoute: AuthenticatedShellLostFoundRoute,
+    AuthenticatedShellNotesRoute: AuthenticatedShellNotesRoute,
+    AuthenticatedShellEventsIdRoute: AuthenticatedShellEventsIdRoute,
+    AuthenticatedShellNoticesIdRoute: AuthenticatedShellNoticesIdRoute,
+    AuthenticatedShellEventsIndexRoute: AuthenticatedShellEventsIndexRoute,
+    AuthenticatedShellNoticesIndexRoute: AuthenticatedShellNoticesIndexRoute,
+  }
+
+const AuthenticatedShellRouteRouteWithChildren =
+  AuthenticatedShellRouteRoute._addFileChildren(
+    AuthenticatedShellRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedShellRouteRoute: typeof AuthenticatedShellRouteRouteWithChildren
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedShellRouteRoute: AuthenticatedShellRouteRouteWithChildren,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

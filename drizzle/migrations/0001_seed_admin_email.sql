@@ -1,0 +1,1 @@
+INSERT INTO public.admin_emails (email) VALUES ('krish.26bcon0436@jecrcu.edu.in') ON CONFLICT DO NOTHING;
