@@ -28,11 +28,9 @@ export function useMe() {
   return data ?? null;
 }
 
-export const allowedDomainsQuery = queryOptions({
-  queryKey: ["allowed-domains"],
-  queryFn: async () => {
-    const { data } = await supabase.from("allowed_domains").select("domain");
-    return (data ?? []).map((d) => d.domain);
-  },
-  staleTime: 10 * 60_000,
-});
+/** Asks the database whether an email belongs to an approved college domain (yes/no only). */
+export async function checkEmailAllowed(email: string | null | undefined) {
+  if (!email) return false;
+  const { data, error } = await supabase.rpc("is_allowed_email", { _email: email });
+  return !error && data === true;
+}

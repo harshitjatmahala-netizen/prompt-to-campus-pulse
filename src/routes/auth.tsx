@@ -6,8 +6,7 @@ import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/app/logo";
 import { GoogleButton } from "@/components/app/google-button";
-import { allowedDomainsQuery } from "@/lib/me";
-import { isAllowedEmail } from "@/lib/rules";
+import { checkEmailAllowed } from "@/lib/me";
 import { LOGIN_DOMAIN_ERROR } from "@/lib/constants";
 
 type AuthSearch = { error?: "domain" | undefined };
@@ -41,8 +40,7 @@ function AuthPage() {
     const { data } = await supabase.auth.getUser();
     const user = data.user;
     if (!user) return false;
-    const allowed = await queryClient.fetchQuery(allowedDomainsQuery);
-    if (!isAllowedEmail(user.email, allowed)) {
+    if (!(await checkEmailAllowed(user.email))) {
       await supabase.auth.signOut();
       queryClient.clear();
       setError(LOGIN_DOMAIN_ERROR);
