@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/app/empty-state";
 import { NoticeDialog } from "@/components/app/notice-dialog";
 import { ConfirmDelete } from "@/components/app/confirm-delete";
+import { BookmarkButton } from "@/components/app/bookmark-button";
 import { supabase } from "@/integrations/supabase/client";
 import { useMe } from "@/lib/me";
 import { canManage, isNew } from "@/lib/rules";
@@ -67,6 +68,7 @@ function NoticeDetail() {
             {n.pinned && <Badge variant="soft"><Pin className="size-3" /> Pinned</Badge>}
             <Badge variant={noticeCategory(n.category).tone}>{noticeCategory(n.category).label}</Badge>
             {isNew(n.created_at) && <Badge variant="new">New</Badge>}
+            <BookmarkButton kind="notice" id={n.id} className="ml-auto" />
           </div>
           <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-foreground">{n.title}</h1>
           <p className="mt-2 text-sm text-muted-foreground">

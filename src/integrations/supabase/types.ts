@@ -127,6 +127,35 @@ export type Database = {
           },
         ]
       }
+      bookmarks: {
+        Row: {
+          created_at: string
+          item_id: string
+          kind: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          item_id: string
+          kind: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          item_id?: string
+          kind?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       claim_requests: {
         Row: {
           admin_note: string | null
@@ -177,6 +206,41 @@ export type Database = {
           },
           {
             foreignKeyName: "claim_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      downloads: {
+        Row: {
+          created_at: string
+          id: string
+          item_id: string
+          kind: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_id: string
+          kind: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_id?: string
+          kind?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "downloads_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -386,6 +450,7 @@ export type Database = {
           category: Database["public"]["Enums"]["notice_category"]
           content: string
           created_at: string
+          event_date: string | null
           id: string
           pinned: boolean
           title: string
@@ -397,6 +462,7 @@ export type Database = {
           category?: Database["public"]["Enums"]["notice_category"]
           content: string
           created_at?: string
+          event_date?: string | null
           id?: string
           pinned?: boolean
           title: string
@@ -408,6 +474,7 @@ export type Database = {
           category?: Database["public"]["Enums"]["notice_category"]
           content?: string
           created_at?: string
+          event_date?: string | null
           id?: string
           pinned?: boolean
           title?: string
@@ -418,6 +485,50 @@ export type Database = {
             foreignKeyName: "notices_author_id_fkey"
             columns: ["author_id"]
             isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_preferences: {
+        Row: {
+          assignment: boolean
+          claim: boolean
+          deadline: boolean
+          event: boolean
+          note: boolean
+          notice: boolean
+          paper: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assignment?: boolean
+          claim?: boolean
+          deadline?: boolean
+          event?: boolean
+          note?: boolean
+          notice?: boolean
+          paper?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assignment?: boolean
+          claim?: boolean
+          deadline?: boolean
+          event?: boolean
+          note?: boolean
+          notice?: boolean
+          paper?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -512,6 +623,59 @@ export type Database = {
         }
         Relationships: []
       }
+      question_papers: {
+        Row: {
+          academic_year: string
+          branch: string
+          created_at: string
+          exam_type: Database["public"]["Enums"]["exam_type"]
+          file_name: string
+          file_path: string
+          file_size: number | null
+          id: string
+          semester: number
+          subject: string
+          uploaded_by: string
+          uploaded_by_name: string | null
+        }
+        Insert: {
+          academic_year: string
+          branch: string
+          created_at?: string
+          exam_type?: Database["public"]["Enums"]["exam_type"]
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          semester: number
+          subject: string
+          uploaded_by: string
+          uploaded_by_name?: string | null
+        }
+        Update: {
+          academic_year?: string
+          branch?: string
+          created_at?: string
+          exam_type?: Database["public"]["Enums"]["exam_type"]
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          semester?: number
+          subject?: string
+          uploaded_by?: string
+          uploaded_by_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "question_papers_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -573,10 +737,15 @@ export type Database = {
       }
       profile_name: { Args: { _id: string }; Returns: string }
       send_assignment_reminders: { Args: never; Returns: undefined }
+      wants_notification: {
+        Args: { _type: string; _user: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "student" | "faculty" | "admin"
       claim_status: "pending" | "approved" | "rejected"
+      exam_type: "mid_sem" | "end_sem"
       item_status:
         | "available"
         | "claim_requested"
@@ -719,6 +888,7 @@ export const Constants = {
     Enums: {
       app_role: ["student", "faculty", "admin"],
       claim_status: ["pending", "approved", "rejected"],
+      exam_type: ["mid_sem", "end_sem"],
       item_status: [
         "available",
         "claim_requested",

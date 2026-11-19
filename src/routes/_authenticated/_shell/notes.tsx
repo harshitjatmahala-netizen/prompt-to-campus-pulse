@@ -12,7 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { PdfPreview } from "@/components/app/pdf-preview";
+import { BookmarkButton } from "@/components/app/bookmark-button";
+import { downloadAndRecord, formatSize } from "@/lib/library";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useMe } from "@/lib/me";
@@ -29,11 +31,6 @@ export const Route = createFileRoute("/_authenticated/_shell/notes")({
   head: () => pageHead("Notes", "Download and preview study material shared by faculty."),
   component: NotesPage,
 });
-
-function formatSize(bytes?: number | null) {
-  if (!bytes) return "PDF";
-  return bytes > 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
-}
 
 function NotesPage() {
   const me = useMe();
@@ -91,8 +88,8 @@ function NotesPage() {
   async function download(n: Tables<"notes">) {
     setBusy(`d-${n.id}`);
     try {
-      const url = await signedUrl("notes", n.file_path, n.file_name);
-      window.location.assign(url);
+      if (!me) return;
+      await downloadAndRecord({ userId: me.userId, bucket: "notes", path: n.file_path, fileName: n.file_name, kind: "note", itemId: n.id, title: n.title });
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -150,12 +147,15 @@ function NotesPage() {
                 <div className="flex size-11 items-center justify-center rounded-xl bg-destructive-soft text-destructive">
                   <FileText className="size-5" />
                 </div>
+                <div className="flex gap-0.5">
+                  <BookmarkButton kind="note" id={n.id} />
                 {canManage(me?.role, me?.userId, n.uploaded_by) && (
-                  <div className="flex gap-0.5">
+                  <>
                     <Button variant="ghost" size="icon" className="size-8" aria-label="Edit" onClick={() => setDialog({ open: true, note: n })}><Pencil /></Button>
                     <ConfirmDelete title="Delete these notes?" onConfirm={() => remove.mutate(n)} trigger={<Button variant="ghost" size="icon" className="size-8" aria-label="Delete"><Trash2 className="text-destructive" /></Button>} />
-                  </div>
+                  </>
                 )}
+                </div>
               </div>
               <p className="mt-4 text-xs font-medium uppercase tracking-wide text-primary">{n.subject}</p>
               <h3 className="mt-1 font-display text-base font-semibold leading-snug text-foreground">{n.title}</h3>
@@ -181,12 +181,7 @@ function NotesPage() {
         </div>
       )}
 
-      <Dialog open={!!preview} onOpenChange={(o) => !o && setPreview(null)}>
-        <DialogContent className="h-[90vh] max-w-5xl gap-3 p-4">
-          <DialogHeader><DialogTitle className="pr-8">{preview?.title}</DialogTitle></DialogHeader>
-          {preview && <iframe src={preview.url} title={preview.title} className="h-full w-full rounded-xl border bg-muted" />}
-        </DialogContent>
-      </Dialog>
+      <PdfPreview preview={preview} onClose={() => setPreview(null)} />
 
       {me && <NoteDialog open={dialog.open} note={dialog.note} onOpenChange={(o) => setDialog((d) => ({ ...d, open: o }))} userId={me.userId} />}
     </>

@@ -5,6 +5,7 @@ import { CalendarDays, Check, Clock, MapPin, Plus, Search, Users } from "lucide-
 import { PageHeader } from "@/components/app/page-header";
 import { EmptyState } from "@/components/app/empty-state";
 import { EventDialog } from "@/components/app/event-dialog";
+import { BookmarkButton } from "@/components/app/bookmark-button";
 import { EventBanner } from "@/components/app/event-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,7 +92,7 @@ function EventsPage() {
                   {e.registered && <Badge variant="success" className="absolute right-3 top-3 shadow-soft"><Check className="size-3" /> Registered</Badge>}
                 </Link>
                 <div className="flex flex-1 flex-col p-5">
-                  <p className="text-xs font-medium text-primary">{e.organizer}</p>
+                  <div className="flex items-start justify-between gap-2"><p className="text-xs font-medium text-primary">{e.organizer}</p><BookmarkButton kind="event" id={e.id} className="-mr-2 -mt-2" /></div>
                   <Link to="/events/$id" params={{ id: e.id }}>
                     <h3 className="mt-1 font-display text-lg font-semibold leading-snug text-foreground transition group-hover:text-primary">{e.title}</h3>
                   </Link>

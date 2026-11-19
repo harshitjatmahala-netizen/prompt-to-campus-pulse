@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/app/empty-state";
 import { EventDialog } from "@/components/app/event-dialog";
 import { EventBanner } from "@/components/app/event-banner";
 import { ConfirmDelete } from "@/components/app/confirm-delete";
+import { BookmarkButton } from "@/components/app/bookmark-button";
 import { UserAvatar } from "@/components/app/user-avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useMe } from "@/lib/me";
@@ -77,6 +78,7 @@ function EventDetail() {
               <Badge variant="soft"><Megaphone className="size-3" /> {e.organizer}</Badge>
               {e.registered && <Badge variant="success"><Check className="size-3" /> You're registered</Badge>}
               {past && <Badge variant="muted">Ended</Badge>}
+              <BookmarkButton kind="event" id={e.id} className="ml-auto" />
             </div>
             <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-foreground sm:text-4xl">{e.title}</h1>
             <div className="mt-6 whitespace-pre-wrap text-[15px] leading-7 text-foreground/90">{e.description}</div>

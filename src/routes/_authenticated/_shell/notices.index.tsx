@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/app/page-header";
 import { EmptyState } from "@/components/app/empty-state";
 import { NoticeDialog } from "@/components/app/notice-dialog";
 import { ConfirmDelete } from "@/components/app/confirm-delete";
+import { BookmarkButton } from "@/components/app/bookmark-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -161,6 +162,7 @@ function NoticesPage() {
                       {n.author_name ?? "College Office"} · {format(new Date(n.created_at), "d MMM yyyy, h:mm a")}
                     </p>
                   </div>
+                  <BookmarkButton kind="notice" id={n.id} className="shrink-0" />
                   {manage && (
                     <div className="flex shrink-0 gap-1 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100">
                       <Button variant="ghost" size="icon" aria-label={n.pinned ? "Unpin" : "Pin"} onClick={() => togglePin.mutate(n)}>
