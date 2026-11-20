@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { formatDistanceToNow } from "date-fns";
-import { Bell, CalendarDays, CheckCheck, ClipboardList, FileText, Megaphone, PackageSearch, AlarmClock } from "lucide-react";
+import { Bell, CalendarDays, CheckCheck, ClipboardList, FileStack, FileText, Megaphone, PackageSearch, AlarmClock } from "lucide-react";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -17,11 +17,13 @@ const ICONS: Record<string, typeof Bell> = {
   deadline: AlarmClock,
   event: CalendarDays,
   claim: PackageSearch,
+  paper: FileStack,
 };
 
 export function useNotifications(userId: string) {
   return useQuery({
     queryKey: ["notifications", userId],
+    enabled: !!userId,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("notifications")
@@ -48,7 +50,7 @@ export function NotificationBell({ userId }: { userId: string }) {
         { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` },
         (payload) => {
           const n = payload.new as { title: string; body: string | null };
-          toast(n.title, { description: n.body ?? undefined });
+          toast(n.title, { description: n.body ?? undefined, duration: 5000 });
           qc.invalidateQueries({ queryKey: ["notifications", userId] });
         },
       )
@@ -133,6 +135,7 @@ export function NotificationBell({ userId }: { userId: string }) {
             </ul>
           )}
         </ScrollArea>
+        <Link to="/notifications" className="block border-t px-4 py-2.5 text-center text-sm font-medium text-primary transition hover:bg-muted/60">Open notification center</Link>
       </PopoverContent>
     </Popover>
   );

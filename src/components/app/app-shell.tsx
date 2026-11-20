@@ -1,6 +1,7 @@
-import { Link, Outlet, useNavigate } from "@tanstack/react-router";
+import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { LogOut, Settings, UserRound } from "lucide-react";
+import { Bookmark, LifeBuoy, LogOut, Settings, UserRound } from "lucide-react";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
@@ -24,6 +25,7 @@ export function AppShell() {
   const { data: me } = useSuspenseQuery(meQuery);
   const qc = useQueryClient();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   if (!me?.profile) return null;
 
   async function handleSignOut() {
@@ -61,7 +63,13 @@ export function AppShell() {
                   <Link to="/profile"><UserRound /> Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <Link to="/saved"><Bookmark /> Saved items</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/settings"><Settings /> Settings</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/help"><LifeBuoy /> Help</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive">
@@ -72,7 +80,14 @@ export function AppShell() {
           </div>
         </header>
         <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
-          <Outlet />
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: 10, scale: 0.995 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Outlet />
+          </motion.div>
         </main>
       </SidebarInset>
     </SidebarProvider>

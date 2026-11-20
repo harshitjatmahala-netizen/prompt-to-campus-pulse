@@ -26,7 +26,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setThemeState(t);
     const r = resolve(t);
     setResolved(r);
-    document.documentElement.classList.toggle("dark", r === "dark");
+    const root = document.documentElement;
+    root.classList.add("theme-transition");
+    root.classList.toggle("dark", r === "dark");
+    window.setTimeout(() => root.classList.remove("theme-transition"), 400);
   }, []);
 
   return <ThemeContext.Provider value={{ theme, resolved, setTheme }}>{children}</ThemeContext.Provider>;
