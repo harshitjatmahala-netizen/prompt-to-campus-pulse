@@ -51,7 +51,7 @@ function SettingsPage() {
   });
   const setPref = useMutation({
     mutationFn: async ({ key, value }: { key: PrefKey; value: boolean }) => {
-      const { error } = await supabase.from("notification_preferences").upsert({ user_id: me!.userId, [key]: value, updated_at: new Date().toISOString() });
+      const { error } = await supabase.from("notification_preferences").upsert({ user_id: me!.userId, updated_at: new Date().toISOString(), ...({ [key]: value } as Partial<Record<PrefKey, boolean>>) });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["notification-prefs"] }),
@@ -70,8 +70,8 @@ function SettingsPage() {
 
   async function onPhoto(file?: File) {
     if (!file || !me) return;
-    if (!file.type.startsWith("image/")) return toast.error("Please choose an image file");
-    if (file.size > 5 * 1024 * 1024) return toast.error("Image must be under 5 MB");
+    if (!file.type.startsWith("image/")) { toast.error("Please choose an image file"); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Image must be under 5 MB"); return; }
     setUploading(true);
     try {
       const path = await uploadFile("media", me.userId, file);
@@ -90,7 +90,7 @@ function SettingsPage() {
         <h2 className="flex items-center gap-2 font-display font-semibold"><UserRound className="size-4 text-primary" /> Profile</h2>
         <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-center">
           <div className="relative w-fit">
-            <UserAvatar src={me?.profile?.avatar_url} name={me?.profile?.full_name ?? ""} className="size-20 text-xl" />
+            <UserAvatar src={me?.profile?.avatar_url ?? null} name={me?.profile?.full_name ?? ""} className="size-20 text-xl" />
             <button type="button" onClick={() => fileRef.current?.click()} aria-label="Change profile photo" className="absolute -bottom-1 -right-1 inline-flex size-8 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground shadow-glow transition hover:scale-110">
               {uploading ? <Loader2 className="size-4 animate-spin" /> : <Camera className="size-4" />}
             </button>

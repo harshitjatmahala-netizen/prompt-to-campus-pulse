@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/_shell/help")({
 });
 
 const SUPPORT = "campusconnect@jecrcu.edu.in";
-const FAQS = [
+const FAQS: [string, string][] = [
   ["Why can't I sign in with my personal Gmail?", "CampusConnect only accepts official @jecrcu.edu.in Google accounts so that every member is a verified student or staff member."],
   ["How do I change my branch, semester or phone number?", "Open Profile from the menu at the top right. Everything except your verified college email can be edited."],
   ["Who can upload notes and question papers?", "Only faculty and admins. Students can search, preview and download them any time."],
