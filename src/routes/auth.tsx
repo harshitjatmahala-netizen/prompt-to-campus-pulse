@@ -1,11 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { AlertCircle, ShieldCheck, Sparkles } from "lucide-react";
+import { AlertCircle, Eye, EyeOff, MailCheck, ShieldCheck, Sparkles } from "lucide-react";
 import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/app/logo";
 import { GoogleButton } from "@/components/app/google-button";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { checkEmailAllowed } from "@/lib/me";
 import { LOGIN_DOMAIN_ERROR } from "@/lib/constants";
 
@@ -18,7 +22,7 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — CampusConnect" },
-      { name: "description", content: "Sign in to CampusConnect with your official college Google account." },
+      { name: "description", content: "Sign in or sign up to CampusConnect with your official college email." },
       { property: "og:title", content: "Sign in — CampusConnect" },
       { property: "og:description", content: "Use your official college email to access your university portal." },
       { property: "og:type", content: "website" },
@@ -35,6 +39,11 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
   const [error, setError] = useState<string | null>(search.error === "domain" ? LOGIN_DOMAIN_ERROR : null);
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   async function verifyAndContinue() {
     const { data } = await supabase.auth.getUser();
@@ -71,6 +80,56 @@ function AuthPage() {
     }
     if (result.redirected) return;
     await verifyAndContinue();
+    setLoading(false);
+  }
+
+  async function handleEmailAuth(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    const trimmed = email.trim().toLowerCase();
+    if (!trimmed || !password) {
+      setError("Please enter your college email and password.");
+      return;
+    }
+    if (mode === "signup" && password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+    setLoading(true);
+    if (!(await checkEmailAllowed(trimmed))) {
+      setError(LOGIN_DOMAIN_ERROR);
+      setLoading(false);
+      return;
+    }
+    if (mode === "signin") {
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email: trimmed, password });
+      if (signInError) {
+        setError(
+          signInError.message.toLowerCase().includes("email not confirmed")
+            ? "Please confirm your email first — check your inbox for the confirmation link."
+            : "Incorrect email or password. New here? Switch to Sign up.",
+        );
+        setLoading(false);
+        return;
+      }
+      await verifyAndContinue();
+    } else {
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: trimmed,
+        password,
+        options: { emailRedirectTo: window.location.origin },
+      });
+      if (signUpError) {
+        setError(signUpError.message);
+        setLoading(false);
+        return;
+      }
+      if (data.session) {
+        await verifyAndContinue();
+      } else {
+        setEmailSent(true);
+      }
+    }
     setLoading(false);
   }
 
@@ -115,7 +174,7 @@ function AuthPage() {
           </Link>
           <h1 className="font-display text-3xl font-bold text-foreground">Welcome back</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Sign in with your official college Google account to continue.
+            Sign in with your college Google account or your college email and password.
           </p>
 
           {error && (
@@ -128,9 +187,92 @@ function AuthPage() {
             </div>
           )}
 
-          <div className="mt-8">
-            <GoogleButton onClick={handleGoogle} loading={loading || checking} />
-          </div>
+          {emailSent ? (
+            <div className="mt-8 flex flex-col items-center gap-3 rounded-xl border border-primary/30 bg-primary/5 p-6 text-center">
+              <MailCheck className="size-8 text-primary" />
+              <p className="font-medium text-foreground">Check your email</p>
+              <p className="text-sm text-muted-foreground">
+                We sent a confirmation link to <span className="font-medium text-foreground">{email}</span>. Click it,
+                then come back and sign in.
+              </p>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setEmailSent(false);
+                  setMode("signin");
+                }}
+              >
+                Back to sign in
+              </Button>
+            </div>
+          ) : (
+            <>
+              <div className="mt-8">
+                <GoogleButton onClick={handleGoogle} loading={loading || checking} />
+              </div>
+
+              <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
+                <span className="h-px flex-1 bg-border" />
+                or with email
+                <span className="h-px flex-1 bg-border" />
+              </div>
+
+              <Tabs
+                value={mode}
+                onValueChange={(v) => {
+                  setMode(v as "signin" | "signup");
+                  setError(null);
+                }}
+              >
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="signin">Sign in</TabsTrigger>
+                  <TabsTrigger value="signup">Sign up</TabsTrigger>
+                </TabsList>
+              </Tabs>
+
+              <form onSubmit={handleEmailAuth} className="mt-4 space-y-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="email">College email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@jecrcu.edu.in"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                      placeholder={mode === "signup" ? "At least 6 characters" : "Your password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      onClick={() => setShowPassword((s) => !s)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
+                </div>
+                <Button type="submit" className="w-full" disabled={loading || checking}>
+                  {loading ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
+                </Button>
+              </form>
+            </>
+          )}
 
           <p className="mt-6 text-center text-xs text-muted-foreground">
             Only <span className="font-medium text-foreground">@jecrcu.edu.in</span> emails are accepted.
