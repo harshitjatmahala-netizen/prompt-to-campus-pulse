@@ -10,6 +10,7 @@
 ## Enhancement brief (Nov 2026)
 - [x] Previous Year Papers module (DB + page)
 - [x] Saved items, download history
-- [ ] Notification center, calendar, help, faculty manage page
-- [ ] Dashboard stats/quick actions/recent activity, admin charts, settings prefs
-- [ ] Global search (assignments + papers), sidebar, animations, landing page
+- [x] Notification center, calendar, help, faculty manage page
+- [x] Dashboard stats/quick actions/recent activity, admin charts, settings prefs
+- [x] Global search (assignments + papers), sidebar, animations, landing page
+- [ ] Click-through test of signed-in pages (needs which account to test as)
