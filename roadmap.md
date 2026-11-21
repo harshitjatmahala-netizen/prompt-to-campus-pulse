@@ -13,4 +13,4 @@
 - [x] Notification center, calendar, help, faculty manage page
 - [x] Dashboard stats/quick actions/recent activity, admin charts, settings prefs
 - [x] Global search (assignments + papers), sidebar, animations, landing page
-- [ ] Click-through test of signed-in pages (needs which account to test as)
+- [x] Click-through test of signed-in pages (as krish, admin)
