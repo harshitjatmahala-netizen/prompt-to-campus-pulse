@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          achievement_date: string
+          category: string
+          certificate_path: string | null
+          created_at: string
+          created_by: string
+          description: string
+          id: string
+          student_id: string
+          title: string
+        }
+        Insert: {
+          achievement_date: string
+          category: string
+          certificate_path?: string | null
+          created_at?: string
+          created_by: string
+          description: string
+          id?: string
+          student_id: string
+          title: string
+        }
+        Update: {
+          achievement_date?: string
+          category?: string
+          certificate_path?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string
+          id?: string
+          student_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "achievements_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achievements_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       admin_emails: {
         Row: {
           created_at: string
@@ -499,6 +550,7 @@ export type Database = {
           note: boolean
           notice: boolean
           paper: boolean
+          system_update: boolean
           updated_at: string
           user_id: string
         }
@@ -510,6 +562,7 @@ export type Database = {
           note?: boolean
           notice?: boolean
           paper?: boolean
+          system_update?: boolean
           updated_at?: string
           user_id: string
         }
@@ -521,6 +574,7 @@ export type Database = {
           note?: boolean
           notice?: boolean
           paper?: boolean
+          system_update?: boolean
           updated_at?: string
           user_id?: string
         }
@@ -676,6 +730,47 @@ export type Database = {
           },
         ]
       }
+      user_preferences: {
+        Row: {
+          accent_color: string
+          appearance_theme: string
+          font_size: string
+          interface_density: string
+          motion_preference: string
+          tour_completed: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accent_color?: string
+          appearance_theme?: string
+          font_size?: string
+          interface_density?: string
+          motion_preference?: string
+          tour_completed?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accent_color?: string
+          appearance_theme?: string
+          font_size?: string
+          interface_density?: string
+          motion_preference?: string
+          tour_completed?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -702,6 +797,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      achievement_wall: {
+        Args: never
+        Returns: {
+          achievement_date: string
+          achievement_id: string
+          avatar_url: string
+          branch: string
+          category: string
+          certificate_path: string
+          created_at: string
+          description: string
+          roll_number: string
+          student_id: string
+          student_name: string
+          title: string
+        }[]
+      }
       current_role_name: {
         Args: never
         Returns: Database["public"]["Enums"]["app_role"]
@@ -711,6 +823,17 @@ export type Database = {
         Returns: {
           event_id: string
           total: number
+        }[]
+      }
+      faculty_directory: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          branch: string
+          email: string
+          full_name: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
         }[]
       }
       has_role: {

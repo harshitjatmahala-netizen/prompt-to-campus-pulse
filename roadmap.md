@@ -4,4 +4,4 @@
 - [ ] Add guided onboarding and profile completion progress.
 - [ ] Improve file preview and dashboard widgets.
 - [ ] Expand global search and navigation to requested campus resources.
-- [ ] Add a complete footer and verify route metadata, responsive behavior, and signed-in flows.
+- [ ] Add a complete footer and verify route metadata, responsive behavior, and signed-in flows; use JECRC University as the campus name.

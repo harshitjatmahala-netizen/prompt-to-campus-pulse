@@ -35,3 +35,6 @@ use the editor.
 - Signed-in pages live under src/routes/_authenticated/_shell (sidebar layout, requires completed profile). Why: one gate for profile setup.
 - Files go to private buckets (notes, media) and are shown via signed URLs. Why: public buckets are blocked in this workspace.
 <!-- AGENT-MEMORY:END -->
+
+- Store each member's appearance and onboarding state in `public.user_preferences` with owner-scoped RLS; keep display preferences durable across devices.
+- Expose achievement-linked student details and faculty directory entries through authenticated, narrow SECURITY DEFINER RPCs instead of broadening profile reads; protect unrelated profile data.
